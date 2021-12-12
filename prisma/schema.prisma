@@ -5,7 +5,7 @@ datasource db {
 
 generator elexirAbsinthe {
   provider                        = "node -r ts-node/register/transpile-only src/cli.ts"
-  output                          = "../../hello/lib"
+  output                          = "../../hello-gen/lib"
   appname                         = "Hello"
 }
 

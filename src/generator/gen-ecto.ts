@@ -36,15 +36,13 @@ export const generateEcto = ({ model, config }: GenerateEctoParam) => {
     return result;
   };
 
-  return `
-defmodule ${config.appname}.${model.name} do
+  return `defmodule ${config.appname}.${model.name} do
   use Ecto.Schema
   import Ecto.Changeset
   alias ${config.appname}.Repo
   
   schema "${model.name.toLocaleLowerCase()}" do
-${model.fields.map(gen_field).join('')}
-  end
+${model.fields.map(gen_field).join('')}  end
 
   @doc false
   def changeset(${model.name.toLocaleLowerCase()}, attrs) do
@@ -59,8 +57,7 @@ ${model.fields.map(gen_field).join('')}
 ${model.fields
   .filter((field: DMMF.Field) => field.isUnique)
   .map((field: DMMF.Field) => '    |> unique_constraint(:' + field.name + ')')
-  .join('\n')}
-  end
+  .join('\n')}  end
 
 end
 `;
