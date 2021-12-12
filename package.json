@@ -1,0 +1,72 @@
+{
+  "name": "prisma-generator-elixir-absinthe",
+  "description": "Generates Elixir Absinthe GraphQL files from Prisma Schema",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Ron Arts",
+    "email": "ron.arts@gmail.com"
+  },
+  "main": "dist/index.js",
+  "keywords": [
+    "prisma",
+    "generator",
+    "elixir",
+    "absinthe",
+    "graphql"
+  ],
+  "scripts": {
+    "prebuild": "yarn cleanup:generated",
+    "build": "tsc --project tsconfig.build.json",
+    "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
+    "prelint": "yarn format --loglevel error",
+    "lint": "eslint \"{src,test}/**/*.{js,ts}\" --fix",
+    "pretest": "yarn lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "cleanup:generated": "rimraf src/@generated",
+    "pregenerate": "yarn cleanup:generated",
+    "generate": "npx prisma generate && yarn format --loglevel error"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raarts/prisma-generator-elixir-absinthe"
+  },
+  "bin": {
+    "prisma-generator-elixir-absinthe": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.6.0",
+    "@prisma/generator-helper": "^3.6.0",
+    "@prisma/sdk": "^3.6.0",
+    "case": "^1.6.3",
+    "make-dir": "^3.1.0",
+    "slash": "^4.0.0",
+    "tar": "^6.1.11"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.4.4",
+    "prettier": "^2.5.1",
+    "prisma": "^3.6.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.3"
+  }
+}

@@ -1,0 +1,43 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+}
+
+generator nestjsDto {
+  provider                        = "node -r ts-node/register/transpile-only src/cli.ts"
+  output                          = "../src/@generated/prisma-generator-elixir-absinthe"
+  prefix                          = "Hello"
+}
+
+model Product {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar(255)
+  description String   @db.VarChar(1024)
+  images      Json[]   @db.Json
+  highlighted Boolean? @default(false)
+  reviewCount Int?     @default(0)
+  attributes  Json?
+  score       Float?
+  categoryId  String   @db.Uuid
+  companyId   String   @db.Uuid
+
+  category Category @relation(fields: [categoryId], references: [id])
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("products")
+}
+
+model Category {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  Product Product[]
+}
+
+model Company {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  Product Product[]
+}
