@@ -2,6 +2,7 @@ import type { DMMF } from '@prisma/generator-helper';
 import path from 'path';
 import { Model } from './types';
 import { logger } from '@prisma/sdk';
+import { generateEcto } from './gen-ecto';
 
 interface RunParam {
   output: string;
@@ -12,6 +13,7 @@ interface RunParam {
 export const run = ({ output, dmmf, config }: RunParam) => {
   const allModels = dmmf.datamodel.models;
 
+  // Extend the model definitions with the files and paths that need to be generated
   const filteredModels: Model[] = allModels.map((model) => ({
     ...model,
     output: {
@@ -35,10 +37,19 @@ export const run = ({ output, dmmf, config }: RunParam) => {
 
   console.log(filteredModels);
 
+  // for each model loop and generate all files
   const modelFiles = filteredModels.map((model) => {
     logger.info(`Processing Model ${model.name}`);
 
-    return [];
+    // generate ecto definition hello/model.ex
+    const ecto = {
+      fileName: model.output.ecto + '.ex',
+      content: generateEcto({
+        model,
+        config,
+      }),
+    };
+    return [ecto];
   });
 
   return [...modelFiles].flat();

@@ -9,12 +9,13 @@ generator elexirAbsinthe {
   appname                         = "Hello"
 }
 
+// The product description string
 model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String   @db.VarChar(255)
+  name        String   @db.VarChar(255) @unique
   description String   @db.VarChar(1024)
   images      Json[]   @db.Json
-  highlighted Boolean? @default(false)
+  highlighted Boolean? @default(false) /// this means highlighted
   reviewCount Int?     @default(0)
   attributes  Json?
   score       Float?
