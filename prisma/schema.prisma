@@ -3,10 +3,10 @@ datasource db {
   url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
 }
 
-generator nestjsDto {
+generator elexirAbsinthe {
   provider                        = "node -r ts-node/register/transpile-only src/cli.ts"
-  output                          = "../src/@generated/prisma-generator-elixir-absinthe"
-  prefix                          = "Hello"
+  output                          = "../../hello/lib"
+  appname                         = "Hello"
 }
 
 model Product {

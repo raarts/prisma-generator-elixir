@@ -11,9 +11,11 @@ export const generate = async (options: GeneratorOptions): Promise<any> => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const output = parseEnvValue(options.generator.output!);
 
+  console.log(options);
   const results = run({
     output,
     dmmf: options.dmmf,
+    config: { ...options.generator.config },
   });
   logger.log(results);
   logger.info('Done');
