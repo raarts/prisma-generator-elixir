@@ -2,16 +2,15 @@
 
 1. [What is it?](#what-is-it)
 1. [Usage](#usage)
-1. [Annotations](#annotations)
 1. [Example](#example)
-1. [Principles](#principles)
 1. [License](#license)
 
+(This is absolutely not ready yet, pre-pre-pre alpha)
 ## <a name="what-is-it"></a>What is it?
 
 Generates `schema`, `resolvers`,  for models in your Prisma Schema. 
 
-## <a name="usage"></a>Usage?
+## <a name="usage"></a>Usage
 
 ```sh
 npm install --save-dev @raarts/prisma-generator-elixir absinthe
