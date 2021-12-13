@@ -4,6 +4,7 @@ import { Model } from './types';
 import { logger } from '@prisma/sdk';
 import { generateEcto } from './gen-ecto';
 import { generateSchema } from './gen-schema';
+import { generateResolver } from './gen-resolver';
 
 interface RunParam {
   output: string;
@@ -59,7 +60,16 @@ export const run = ({ output, dmmf, config }: RunParam) => {
         config,
       }),
     };
-    return [ecto, schema];
+
+    // generate schema definition hello_web/schema/model.ex
+    const resolver = {
+      fileName: model.output.resolver + '.ex',
+      content: generateResolver({
+        model,
+        config,
+      }),
+    };
+    return [ecto, schema, resolver];
   });
 
   return [...modelFiles].flat();
