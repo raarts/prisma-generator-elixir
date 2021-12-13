@@ -1,4 +1,4 @@
-# Prisma Generator Elixir Absinthe 
+# Prisma Generator Elixir 
 
 1. [What is it?](#what-is-it)
 1. [Usage](#usage)
@@ -13,12 +13,12 @@ Generates `schema`, `resolvers`,  for models in your Prisma Schema.
 ## <a name="usage"></a>Usage
 
 ```sh
-npm install --save-dev @raarts/prisma-generator-elixir absinthe
+npm install --save-dev @raarts/prisma-generator-elixir
 ```
 
 ```prisma
-generator elixirAbsinthe {
-  provider                        = "prisma-generator-elixir-absinthe"
+generator elixir {
+  provider                        = "prisma-generator-elixir"
   output                          = "../hello/lib/hello_web"
   appname                         = "Hallo"
 }
@@ -38,7 +38,7 @@ generator elixirAbsinthe {
   ```prisma
 
 generator elixirAbsinthe {
-provider = "prisma-generator-elixir-absinthe"
+provider = "prisma-generator-elixir"
 output = "../src"
 }
 
@@ -83,4 +83,4 @@ updatedById String? @db.Uuid
 
 ## <a name="license"></a>License
 
-All files are released under the [Apache License 2.0](https://github.com/vegardit/prisma-generator-nestjs-dto/blob/master/LICENSE).
+All files are released under the [Apache License 2.0](https://github.com/raarts/prisma-generator-elixir/blob/master/LICENSE).

@@ -1,6 +1,6 @@
 {
-  "name": "prisma-generator-elixir-absinthe",
-  "description": "Generates Elixir Absinthe GraphQL files from Prisma Schema",
+  "name": "prisma-generator-elixir",
+  "description": "Generates Elixir Ecto and Absinthe GraphQL files from Prisma Schema",
   "version": "0.0.1",
   "license": "Apache-2.0",
   "author": {
@@ -30,10 +30,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/raarts/prisma-generator-elixir-absinthe"
+    "url": "https://github.com/raarts/prisma-generator-elixir"
   },
   "bin": {
-    "prisma-generator-elixir-absinthe": "dist/cli.js"
+    "prisma-generator-elixir": "dist/cli.js"
   },
   "engines": {
     "node": ">=14"
