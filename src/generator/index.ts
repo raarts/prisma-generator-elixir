@@ -3,6 +3,7 @@ import path from 'path';
 import { Model } from './types';
 import { logger } from '@prisma/sdk';
 import { generateEcto } from './gen-ecto';
+import { generateSchema } from './gen-schema';
 
 interface RunParam {
   output: string;
@@ -35,7 +36,7 @@ export const run = ({ output, dmmf, config }: RunParam) => {
     },
   }));
 
-  console.log(filteredModels);
+  console.log('filteredModels: ', filteredModels);
 
   // for each model loop and generate all files
   const modelFiles = filteredModels.map((model) => {
@@ -49,7 +50,16 @@ export const run = ({ output, dmmf, config }: RunParam) => {
         config,
       }),
     };
-    return [ecto];
+
+    // generate schema definition hello_web/schema/model.ex
+    const schema = {
+      fileName: model.output.schema + '.ex',
+      content: generateSchema({
+        model,
+        config,
+      }),
+    };
+    return [ecto, schema];
   });
 
   return [...modelFiles].flat();

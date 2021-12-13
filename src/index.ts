@@ -29,6 +29,7 @@ export const generate = async (options: GeneratorOptions): Promise<any> => {
       .concat(Object.values(indexCollections))
       .map(async ({ fileName, content }) => {
         await makeDir(path.dirname(fileName));
+        console.log('writing:' + fileName);
         return fs.writeFile(fileName, content);
       }),
   );
