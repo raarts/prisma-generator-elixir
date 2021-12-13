@@ -11,7 +11,7 @@ import { WriteableFileSpecs } from './generator/types';
 import makeDir from 'make-dir';
 
 export const generate = async (options: GeneratorOptions): Promise<any> => {
-  logger.log('Generating Absinthe GraphQL files');
+  logger.log('Generating Elixir files');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const output = parseEnvValue(options.generator.output!);
 
@@ -36,8 +36,8 @@ export const generate = async (options: GeneratorOptions): Promise<any> => {
 
 generatorHandler({
   onManifest: () => ({
-    defaultOutput: '../src/generated/nestjs-dto',
-    prettyName: 'Elixir Absinthe GraphQL Generator',
+    defaultOutput: '../src/@generated/prisma-generator-elixir',
+    prettyName: 'Elixir Ecto and Absinthe/GraphQL Generator',
   }),
   onGenerate: generate,
 });
