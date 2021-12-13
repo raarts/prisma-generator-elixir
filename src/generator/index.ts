@@ -3,8 +3,9 @@ import path from 'path';
 import { Model } from './types';
 import { logger } from '@prisma/sdk';
 import { generateEcto } from './gen-ecto';
-import { generateSchema } from './gen-schema';
+import { generateTypes } from './gen-types';
 import { generateResolver } from './gen-resolver';
+import { generateSchema } from './gen-schema';
 
 interface RunParam {
   output: string;
@@ -24,7 +25,7 @@ export const run = ({ output, dmmf, config }: RunParam) => {
         config.appname.toLocaleLowerCase(),
         model.name.toLocaleLowerCase(),
       ),
-      schema: path.join(
+      types: path.join(
         output,
         config.appname.toLocaleLowerCase() + '_web/schema',
         model.name.toLocaleLowerCase(),
@@ -54,8 +55,8 @@ export const run = ({ output, dmmf, config }: RunParam) => {
 
     // generate schema definition hello_web/schema/model.ex
     const schema = {
-      fileName: model.output.schema + '.ex',
-      content: generateSchema({
+      fileName: model.output.types + '.ex',
+      content: generateTypes({
         model,
         config,
       }),
@@ -71,6 +72,19 @@ export const run = ({ output, dmmf, config }: RunParam) => {
     };
     return [ecto, schema, resolver];
   });
+
+  modelFiles.push([
+    {
+      fileName: path.join(
+        output,
+        config.appname.toLocaleLowerCase() + '_web/schema.ex',
+      ),
+      content: generateSchema({
+        models: filteredModels,
+        config,
+      }),
+    },
+  ]);
 
   return [...modelFiles].flat();
 };

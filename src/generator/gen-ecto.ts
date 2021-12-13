@@ -1,7 +1,8 @@
 import type { DMMF } from '@prisma/generator-helper';
+import { Model } from './types';
 
 interface GenerateEctoParam {
-  model: any;
+  model: Model;
   config: any;
 }
 

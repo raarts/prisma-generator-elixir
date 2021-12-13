@@ -3,7 +3,7 @@ import { DMMF } from '@prisma/generator-helper';
 export interface Model extends DMMF.Model {
   output: {
     ecto: string;
-    schema: string;
+    types: string;
     resolver: string;
   };
 }

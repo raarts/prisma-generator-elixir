@@ -1,53 +1,43 @@
-import type { DMMF } from '@prisma/generator-helper';
+import { Model } from './types';
 
 interface GenerateSchemaParam {
-  model: any;
+  models: Model[];
   config: any;
 }
 
-export const generateSchema = ({ model, config }: GenerateSchemaParam) => {
-  const gen_field = (field: DMMF.Field) => {
-    let result = `    field :${field.name.toLocaleLowerCase()},`;
-    switch (field.type) {
-      case 'String':
-        result += ` :string`;
-        break;
-      case 'Json':
-        result += ` :string`;
-        break;
-      case 'Boolean':
-        result += ` :boolean`;
-        break;
-      case 'Int':
-        result += ` :integer`;
-        break;
-      case 'Float':
-        result += ` :float`;
-        break;
-      case 'DateTime':
-        result += ` :DateTime`;
-        break;
-      default:
-    }
-    result += ' do\n';
-    if (field.documentation) {
-      result += '      description "' + field.documentation + '"\n';
-    }
-    result += '    end\n';
-    return result;
-  };
-
-  return `defmodule ${config.appname}.Schema.${model.name} do
+export const generateSchema = ({ models, config }: GenerateSchemaParam) => {
+  return `defmodule ${config.appname}.Schema do
   @moduledoc """
   This module is automatically generated.
   """
 
-  use Absinthe.Schema.Notation
-
-  object :${model.name.toLocaleLowerCase()} do
-    description ""
-
-${model.fields.map(gen_field).join('')}  end
-end
+  use Absinthe.Schema
+  alias Absinthe.Plugin
+  
+${models
+  .map((model) => {
+    return `  alias ${config.appname}.Resolver.${model.name}\n`;
+  })
+  .join('')}
+${models
+  .map((model) => {
+    return `  import_types ${config.appname}.Schema.${model.name}Types\n`;
+  })
+  .join('')}
+  
+  query do
+${models
+  .map((model) => {
+    return `
+    field :${model.name.toLocaleLowerCase()}, :${model.name.toLocaleLowerCase()} do
+      description "${model.documentation}"
+      arg :id non_null(:integer)
+      resolve &${model.name}.get/3
+    end
+  `;
+  })
+  .join('')}  
+  end
+end 
 `;
 };
