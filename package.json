@@ -1,7 +1,7 @@
 {
   "name": "prisma-generator-elixir",
   "description": "Generates Elixir Ecto and Absinthe GraphQL files from Prisma Schema",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "Apache-2.0",
   "author": {
     "name": "Ron Arts",
@@ -16,6 +16,7 @@
     "graphql"
   ],
   "scripts": {
+    "prepublishOnly": "yarn build",
     "prebuild": "yarn cleanup:generated",
     "build": "tsc --project tsconfig.build.json",
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
