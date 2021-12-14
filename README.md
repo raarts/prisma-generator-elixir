@@ -28,6 +28,11 @@ generator elixir {
 
 - [`output`]: (required) - output path relative to your `schema.prisma` file
 - [`appname`]: (required) - Base name of the Elixir Application 
+- [`genEcto`]: (optional) - Generate Ecto schema. Default true
+- [`genTypes`]: (optional) - Generate Absinthe Type files. Default true
+- [`genResolvers`]: (optional) - Generate Absinthe Resolvers based on Ecto Repo calls. Default true 
+- [`genSchema`]: (optional) - Generate Absinthe Schema file. Default true
+- [`genMigration`]: (optional) - Generate Ecto migration file. Default false
 
 
 ## <a name="example"></a>Example
