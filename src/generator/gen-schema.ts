@@ -1,6 +1,6 @@
 import { Model } from './types';
 import { DMMF } from '@prisma/generator-helper';
-import { mapPrismTypeToElixir } from './helpers';
+import { mapPrismTypeToGraphQL } from './helpers';
 
 interface GenerateSchemaParam {
   models: Model[];
@@ -10,7 +10,7 @@ interface GenerateSchemaParam {
 export const generateSchema = ({ models, config }: GenerateSchemaParam) => {
   const gen_arg = (field: DMMF.Field) => {
     let result = `      arg :${field.name.toLocaleLowerCase()}`;
-    result += mapPrismTypeToElixir(field.type);
+    result += mapPrismTypeToGraphQL(field.type);
     result += '\n';
     return result;
   };

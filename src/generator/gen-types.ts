@@ -1,6 +1,6 @@
 import type { DMMF } from '@prisma/generator-helper';
 import { Model } from './types';
-import { mapPrismTypeToElixir } from './helpers';
+import { mapPrismTypeToGraphQL } from './helpers';
 
 interface GenerateTypesParam {
   model: Model;
@@ -11,7 +11,7 @@ export const generateTypes = ({ model, config }: GenerateTypesParam) => {
   const gen_field = (field: DMMF.Field) => {
     console.log(field);
     let result = `    field :${field.name.toLocaleLowerCase()}`;
-    result += mapPrismTypeToElixir(field.type);
+    result += mapPrismTypeToGraphQL(field.type);
     result += ' do\n';
     // if (field.documentation) {
     result += '      description "' + field.documentation + '"\n';

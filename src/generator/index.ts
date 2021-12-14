@@ -90,7 +90,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
       fileName: path.join(
         output,
         '../priv/repo/migrations',
-        timestamp + '.exs',
+        timestamp + '_prisma_generated.exs',
       ),
       content: generateMigration({
         models: filteredModels,

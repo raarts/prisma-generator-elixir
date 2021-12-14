@@ -1,5 +1,6 @@
 import type { DMMF } from '@prisma/generator-helper';
 import { Model } from './types';
+import { mapPrismTypeToEcto } from './helpers';
 
 interface GenerateEctoParam {
   model: Model;
@@ -9,27 +10,7 @@ interface GenerateEctoParam {
 export const generateEcto = ({ model, config }: GenerateEctoParam) => {
   const gen_field = (field: DMMF.Field) => {
     let result = `    field :${field.name.toLocaleLowerCase()}`;
-    switch (field.type) {
-      case 'String':
-        result += `, :string`;
-        break;
-      case 'Json':
-        result += `, :string`;
-        break;
-      case 'Boolean':
-        result += `, :boolean`;
-        break;
-      case 'Int':
-        result += `, :integer`;
-        break;
-      case 'Float':
-        result += `, :float`;
-        break;
-      case 'DateTime':
-        result += `, :utc_datetime`;
-        break;
-      default:
-    }
+    result += mapPrismTypeToEcto(field.type);
     if (field.isId) {
       result += ', primary_key: true';
     }

@@ -1,6 +1,6 @@
 import type { DMMF } from '@prisma/generator-helper';
 import { Model } from './types';
-import { mapPrismTypeToElixir } from './helpers';
+import { mapPrismTypeToEcto } from './helpers';
 
 interface GenerateMigrationParam {
   models: Model[];
@@ -15,23 +15,27 @@ export const generateMigration = ({
 }: GenerateMigrationParam) => {
   const gen_add = (field: DMMF.Field) => {
     let result = `      add :${field.name.toLocaleLowerCase()}`;
-    result += mapPrismTypeToElixir(field.type);
+    result += mapPrismTypeToEcto(field.type);
+    if (field.isId) {
+      result += ', primary_key: true';
+    }
     result += '\n';
     return result;
   };
 
   return `defmodule ${config.appname}.Repo.Migrations.S${timestamp} do
   use Ecto.Migration
+  
+  def change do
 ${models
   .map((model) => {
     return `
-  def change do
-    create table(:${model.name.toLocaleLowerCase()}) do
+    create table(:${model.name.toLocaleLowerCase()}, primary_key: false) do
 ${model.fields.map(gen_add).join('')}    end
-  end
   `;
   })
   .join('')}
+  end
 end
 `;
 };
