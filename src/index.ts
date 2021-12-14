@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import { WriteableFileSpecs } from './generator/types';
 import makeDir from 'make-dir';
+import moment from 'moment';
 
 export const generate = async (options: GeneratorOptions): Promise<any> => {
   logger.log('Generating Elixir files');
@@ -19,7 +20,10 @@ export const generate = async (options: GeneratorOptions): Promise<any> => {
   const results = run({
     output,
     dmmf: options.dmmf,
-    config: { ...options.generator.config },
+    config: {
+      ...options.generator.config,
+    },
+    timestamp: moment().format('YYYYMMDDhhmmss'),
   });
 
   const indexCollections: Record<string, WriteableFileSpecs> = {};

@@ -1,4 +1,6 @@
 import { Model } from './types';
+import { DMMF } from '@prisma/generator-helper';
+import { mapPrismTypeToElixir } from './helpers';
 
 interface GenerateSchemaParam {
   models: Model[];
@@ -6,6 +8,13 @@ interface GenerateSchemaParam {
 }
 
 export const generateSchema = ({ models, config }: GenerateSchemaParam) => {
+  const gen_arg = (field: DMMF.Field) => {
+    let result = `      arg :${field.name.toLocaleLowerCase()}`;
+    result += mapPrismTypeToElixir(field.type);
+    result += '\n';
+    return result;
+  };
+
   return `defmodule ${config.appname}Web.Schema do
   @moduledoc """
   This module is automatically generated.
@@ -32,7 +41,7 @@ ${models
     return `
     field :${model.name.toLocaleLowerCase()}, :${model.name.toLocaleLowerCase()} do
       description "${model.documentation}"
-      arg :id, non_null(:integer)
+${model.fields.map(gen_arg).join('')}
       resolve &${model.name}.get/3
     end
   `;

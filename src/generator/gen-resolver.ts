@@ -10,9 +10,10 @@ export const generateResolver = ({ model, config }: GenerateResolverParam) => {
   @moduledoc """
   This module is automatically generated.
   """
+  alias ${config.appname}.Repo
   
   def get(_root, args, info) do
-    # Do a Repo.get here
+    Repo.get(${config.appname}.${model.name}, args.id)
   end
   
 end

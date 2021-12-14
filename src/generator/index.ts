@@ -6,14 +6,16 @@ import { generateEcto } from './gen-ecto';
 import { generateTypes } from './gen-types';
 import { generateResolver } from './gen-resolver';
 import { generateSchema } from './gen-schema';
+import { generateMigration } from './gen-migration';
 
 interface RunParam {
   output: string;
   dmmf: DMMF.Document;
   config: any;
+  timestamp: string;
 }
 
-export const run = ({ output, dmmf, config }: RunParam) => {
+export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
   const allModels = dmmf.datamodel.models;
 
   // Extend the model definitions with the files and paths that need to be generated
@@ -82,6 +84,18 @@ export const run = ({ output, dmmf, config }: RunParam) => {
       content: generateSchema({
         models: filteredModels,
         config,
+      }),
+    },
+    {
+      fileName: path.join(
+        output,
+        '../priv/repo/migrations',
+        timestamp + '.exs',
+      ),
+      content: generateMigration({
+        models: filteredModels,
+        config,
+        timestamp,
       }),
     },
   ]);

@@ -1,5 +1,6 @@
 import type { DMMF } from '@prisma/generator-helper';
 import { Model } from './types';
+import { mapPrismTypeToElixir } from './helpers';
 
 interface GenerateTypesParam {
   model: Model;
@@ -8,30 +9,9 @@ interface GenerateTypesParam {
 
 export const generateTypes = ({ model, config }: GenerateTypesParam) => {
   const gen_field = (field: DMMF.Field) => {
+    console.log(field);
     let result = `    field :${field.name.toLocaleLowerCase()}`;
-    switch (field.type) {
-      case 'String':
-        result += `, :string`;
-        break;
-      case 'Json':
-        result += `, :string`;
-        break;
-      case 'Boolean':
-        result += `, :boolean`;
-        break;
-      case 'Int':
-        result += `, :integer`;
-        break;
-      case 'Float':
-        result += `, :float`;
-        break;
-      case 'DateTime':
-        result += `, :datetime`;
-        break;
-      default:
-        result += `, :string`;
-        break;
-    }
+    result += mapPrismTypeToElixir(field.type);
     result += ' do\n';
     // if (field.documentation) {
     result += '      description "' + field.documentation + '"\n';

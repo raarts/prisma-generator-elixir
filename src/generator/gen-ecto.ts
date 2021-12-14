@@ -30,6 +30,9 @@ export const generateEcto = ({ model, config }: GenerateEctoParam) => {
         break;
       default:
     }
+    if (field.isId) {
+      result += ', primary_key: true';
+    }
     if (field.documentation) {
       result += '  # ' + field.documentation;
     }
