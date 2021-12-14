@@ -41,6 +41,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
       ecto: path.join(
         output,
         config.appname.toLocaleLowerCase(),
+        'schema',
         model.name.toLocaleLowerCase(),
       ),
       types: path.join(
