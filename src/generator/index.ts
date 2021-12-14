@@ -56,8 +56,6 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
     },
   }));
 
-  console.log('filteredModels: ', filteredModels);
-
   // for each model loop and generate all files
   const modelFiles = filteredModels.map((model) => {
     logger.info(`Processing Model ${model.name}`);
@@ -71,7 +69,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
       }),
     };
 
-    // generate schema definition hello_web/schema/model.ex
+    // generate schema types definition hello_web/schema/model.ex
     const types = {
       fileName: model.output.types + '.ex',
       content: generateTypes({
@@ -80,7 +78,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
       }),
     };
 
-    // generate schema definition hello_web/schema/model.ex
+    // generate schema resolver hello_web/resolvers/model.ex
     const resolver = {
       fileName: model.output.resolver + '.ex',
       content: generateResolver({
@@ -96,6 +94,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
   });
 
   if (genSchema) {
+    // generate schema file hello_web/schema.ex
     modelFiles.push([
       {
         fileName: path.join(
@@ -111,6 +110,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
   }
 
   if (genMigration) {
+    // generate migration file priv/repo/migrations/YYYYMMDDhhmmss_prisma_generated.exs
     modelFiles.push([
       {
         fileName: path.join(

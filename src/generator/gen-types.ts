@@ -9,7 +9,6 @@ interface GenerateTypesParam {
 
 export const generateTypes = ({ model, config }: GenerateTypesParam) => {
   const gen_field = (field: DMMF.Field) => {
-    console.log(field);
     let result = `    field :${field.name.toLocaleLowerCase()}`;
     result += mapPrismTypeToGraphQL(field.type);
     result += ' do\n';
