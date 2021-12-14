@@ -13,7 +13,12 @@ export const generateResolver = ({ model, config }: GenerateResolverParam) => {
   alias ${config.appname}.Repo
   
   def get(_root, args, info) do
-    Repo.get(${config.appname}.${model.name}, args.id)
+    case Repo.get(${config.appname}.${model.name}, args.id) do
+      nil ->
+        {:error, "${model.name} ID #{args.id} not found"}
+      ${model.name.toLocaleLowerCase()} ->
+        {:ok, ${model.name.toLocaleLowerCase()}}
+    end
   end
   
 end
