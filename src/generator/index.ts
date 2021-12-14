@@ -15,8 +15,24 @@ interface RunParam {
   timestamp: string;
 }
 
+export const stringToBoolean = (input: string, defaultValue = false) => {
+  if (input === 'true') {
+    return true;
+  }
+  if (input === 'false') {
+    return false;
+  }
+  return defaultValue;
+};
+
 export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
   const allModels = dmmf.datamodel.models;
+
+  const genEcto = stringToBoolean(config.genEcto, true);
+  const genTypes = stringToBoolean(config.genTypes, true);
+  const genResolvers = stringToBoolean(config.genResolvers, true);
+  const genSchema = stringToBoolean(config.genSchema, true);
+  const genMigration = stringToBoolean(config.genMigration, false);
 
   // Extend the model definitions with the files and paths that need to be generated
   const filteredModels: Model[] = allModels.map((model) => ({
@@ -56,7 +72,7 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
     };
 
     // generate schema definition hello_web/schema/model.ex
-    const schema = {
+    const types = {
       fileName: model.output.types + '.ex',
       content: generateTypes({
         model,
@@ -72,33 +88,44 @@ export const run = ({ output, dmmf, config, timestamp }: RunParam) => {
         config,
       }),
     };
-    return [ecto, schema, resolver];
+    const list = [];
+    if (genEcto) list.push(ecto);
+    if (genTypes) list.push(types);
+    if (genResolvers) list.push(resolver);
+    return list;
   });
 
-  modelFiles.push([
-    {
-      fileName: path.join(
-        output,
-        config.appname.toLocaleLowerCase() + '_web/schema.ex',
-      ),
-      content: generateSchema({
-        models: filteredModels,
-        config,
-      }),
-    },
-    {
-      fileName: path.join(
-        output,
-        '../priv/repo/migrations',
-        timestamp + '_prisma_generated.exs',
-      ),
-      content: generateMigration({
-        models: filteredModels,
-        config,
-        timestamp,
-      }),
-    },
-  ]);
+  if (genSchema) {
+    modelFiles.push([
+      {
+        fileName: path.join(
+          output,
+          config.appname.toLocaleLowerCase() + '_web/schema.ex',
+        ),
+        content: generateSchema({
+          models: filteredModels,
+          config,
+        }),
+      },
+    ]);
+  }
+
+  if (genMigration) {
+    modelFiles.push([
+      {
+        fileName: path.join(
+          output,
+          '../priv/repo/migrations',
+          timestamp + '_prisma_generated.exs',
+        ),
+        content: generateMigration({
+          models: filteredModels,
+          config,
+          timestamp,
+        }),
+      },
+    ]);
+  }
 
   return [...modelFiles].flat();
 };
