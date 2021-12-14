@@ -8,37 +8,39 @@ interface GenerateTypesParam {
 
 export const generateTypes = ({ model, config }: GenerateTypesParam) => {
   const gen_field = (field: DMMF.Field) => {
-    let result = `    field :${field.name.toLocaleLowerCase()},`;
+    let result = `    field :${field.name.toLocaleLowerCase()}`;
     switch (field.type) {
       case 'String':
-        result += ` :string`;
+        result += `, :string`;
         break;
       case 'Json':
-        result += ` :string`;
+        result += `, :string`;
         break;
       case 'Boolean':
-        result += ` :boolean`;
+        result += `, :boolean`;
         break;
       case 'Int':
-        result += ` :integer`;
+        result += `, :integer`;
         break;
       case 'Float':
-        result += ` :float`;
+        result += `, :float`;
         break;
       case 'DateTime':
-        result += ` :DateTime`;
+        result += `, :datetime`;
         break;
       default:
+        result += `, :string`;
+        break;
     }
     result += ' do\n';
-    if (field.documentation) {
-      result += '      description "' + field.documentation + '"\n';
-    }
+    // if (field.documentation) {
+    result += '      description "' + field.documentation + '"\n';
+    // }
     result += '    end\n';
     return result;
   };
 
-  return `defmodule ${config.appname}.Schema.${model.name}Types do
+  return `defmodule ${config.appname}Web.Schema.${model.name}Types do
   @moduledoc """
   This module is automatically generated.
   """

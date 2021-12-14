@@ -11,27 +11,27 @@ export const generateEcto = ({ model, config }: GenerateEctoParam) => {
     let result = `    field :${field.name.toLocaleLowerCase()}`;
     switch (field.type) {
       case 'String':
-        result += ` :string`;
+        result += `, :string`;
         break;
       case 'Json':
-        result += ` :string`;
+        result += `, :string`;
         break;
       case 'Boolean':
-        result += ` :boolean`;
+        result += `, :boolean`;
         break;
       case 'Int':
-        result += ` :integer`;
+        result += `, :integer`;
         break;
       case 'Float':
-        result += ` :float`;
+        result += `, :float`;
         break;
       case 'DateTime':
-        result += ` :DateTime`;
+        result += `, :utc_datetime`;
         break;
       default:
     }
     if (field.documentation) {
-      result += '  // ' + field.documentation;
+      result += '  # ' + field.documentation;
     }
     result += '\n';
     return result;
@@ -41,6 +41,7 @@ export const generateEcto = ({ model, config }: GenerateEctoParam) => {
   use Ecto.Schema
   import Ecto.Changeset
   alias ${config.appname}.Repo
+  @primary_key false
   
   schema "${model.name.toLocaleLowerCase()}" do
 ${model.fields.map(gen_field).join('')}  end
