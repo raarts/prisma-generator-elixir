@@ -1,11 +1,12 @@
-# Prisma Generator Elixir 
+# Prisma Generator Elixir (Stalled)
 
 1. [What is it?](#what-is-it)
 1. [Usage](#usage)
 1. [Example](#example)
 1. [License](#license)
 
-(This is absolutely not ready yet, pre-pre-pre alpha)
+**This is absolutely not ready yet, pre-alpha, and I parked it, because I switched to Hasura on the server for the moment**. It *does* generate usable code though, feel free to fork/copy.
+
 ## <a name="what-is-it"></a>What is it?
 
 Generates `schema`, `resolvers`,  for models in your Prisma Schema. 
